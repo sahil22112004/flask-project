@@ -1,0 +1,572 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="details-container">
+  <h2>Loan Approval Feature Analysis</h2>
+  <p class="intro-text">Understanding the key factors that influence loan approval decisions</p>
+
+  <!-- Feature Cards -->
+  <div class="features-grid">
+    
+    <!-- Text Feature -->
+    <div class="feature-card">
+      <div class="feature-header">
+        <div class="feature-icon">📝</div>
+        <h3>Loan Purpose (Text)</h3>
+      </div>
+      <div class="feature-content">
+        <p><strong>Description:</strong> Natural language description of why you need the loan</p>
+        <p><strong>Impact:</strong> Lenders assess risk based on loan purpose</p>
+        <div class="impact-examples">
+          <div class="impact-high">✅ <strong>Higher Approval:</strong> Home purchase, Education, Debt consolidation</div>
+          <div class="impact-low">⚠️ <strong>Lower Approval:</strong> Gambling, Luxury items, Speculative investments</div>
+        </div>
+        <div class="tip">💡 <strong>Tip:</strong> Be specific and professional in describing your loan purpose</div>
+      </div>
+    </div>
+
+    <!-- Income Feature -->
+    <div class="feature-card">
+      <div class="feature-header">
+        <div class="feature-icon">💰</div>
+        <h3>Annual Income</h3>
+      </div>
+      <div class="feature-content">
+        <p><strong>Description:</strong> Your total annual income from all sources</p>
+        <p><strong>Impact:</strong> Higher income = Higher approval probability</p>
+        <div class="chart-container">
+          <canvas id="incomeChart" width="300" height="200"></canvas>
+        </div>
+        <div class="income-ranges">
+          <div class="range-item">
+            <span class="range-label">Below $30k:</span>
+            <div class="probability-bar low"><span>25% Approval</span></div>
+          </div>
+          <div class="range-item">
+            <span class="range-label">$30k-$60k:</span>
+            <div class="probability-bar medium"><span>60% Approval</span></div>
+          </div>
+          <div class="range-item">
+            <span class="range-label">Above $60k:</span>
+            <div class="probability-bar high"><span>85% Approval</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Credit Score Feature -->
+    <div class="feature-card">
+      <div class="feature-header">
+        <div class="feature-icon">📊</div>
+        <h3>Credit Score</h3>
+      </div>
+      <div class="feature-content">
+        <p><strong>Description:</strong> A number (300-850) representing your creditworthiness</p>
+        <p><strong>Impact:</strong> Most critical factor in loan approval</p>
+        <div class="chart-container">
+          <canvas id="creditChart" width="300" height="200"></canvas>
+        </div>
+        <div class="credit-ranges">
+          <div class="credit-range poor">
+            <strong>Poor (300-579):</strong> 15% Approval Rate
+          </div>
+          <div class="credit-range fair">
+            <strong>Fair (580-669):</strong> 45% Approval Rate
+          </div>
+          <div class="credit-range good">
+            <strong>Good (670-739):</strong> 75% Approval Rate
+          </div>
+          <div class="credit-range excellent">
+            <strong>Excellent (740+):</strong> 95% Approval Rate
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loan Amount Feature -->
+    <div class="feature-card">
+      <div class="feature-header">
+        <div class="feature-icon">🏛️</div>
+        <h3>Loan Amount</h3>
+      </div>
+      <div class="feature-content">
+        <p><strong>Description:</strong> The total amount of money you're requesting</p>
+        <p><strong>Impact:</strong> Larger amounts require stronger financial profiles</p>
+        <div class="chart-container">
+          <canvas id="loanAmountChart" width="300" height="200"></canvas>
+        </div>
+        <div class="amount-insight">
+          <p>💡 <strong>Sweet Spot:</strong> Loans between $10k-$50k have the highest approval rates</p>
+          <p>⚠️ <strong>Caution:</strong> Loans above $100k require exceptional credit and income</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- DTI Ratio Feature -->
+    <div class="feature-card">
+      <div class="feature-header">
+        <div class="feature-icon">⚖️</div>
+        <h3>Debt-to-Income Ratio</h3>
+      </div>
+      <div class="feature-content">
+        <p><strong>Description:</strong> Your monthly debt payments divided by monthly income</p>
+        <p><strong>Formula:</strong> DTI = Total Monthly Debt ÷ Monthly Income</p>
+        <div class="chart-container">
+          <canvas id="dtiChart" width="300" height="200"></canvas>
+        </div>
+        <div class="dti-ranges">
+          <div class="dti-excellent">✅ <strong>Excellent (≤20%):</strong> 90% Approval</div>
+          <div class="dti-good">👍 <strong>Good (21-35%):</strong> 70% Approval</div>
+          <div class="dti-fair">⚠️ <strong>Fair (36-49%):</strong> 40% Approval</div>
+          <div class="dti-poor">❌ <strong>Poor (≥50%):</strong> 10% Approval</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Employment Status Feature -->
+    <div class="feature-card">
+      <div class="feature-header">
+        <div class="feature-icon">💼</div>
+        <h3>Employment Status</h3>
+      </div>
+      <div class="feature-content">
+        <p><strong>Description:</strong> Your current employment situation</p>
+        <p><strong>Impact:</strong> Stable employment is crucial for loan approval</p>
+        <div class="employment-comparison">
+          <div class="employment-stat employed">
+            <div class="employment-icon">👔</div>
+            <h4>Employed</h4>
+            <div class="approval-rate">78% Approval Rate</div>
+            <p>Steady income provides confidence to lenders</p>
+          </div>
+          <div class="employment-stat unemployed">
+            <div class="employment-icon">🔍</div>
+            <h4>Unemployed</h4>
+            <div class="approval-rate">22% Approval Rate</div>
+            <p>Higher risk due to income uncertainty</p>
+          </div>
+        </div>
+        <div class="employment-tips">
+          <p>💡 <strong>For Unemployed Applicants:</strong></p>
+          <ul>
+            <li>Show alternative income sources</li>
+            <li>Provide strong collateral</li>
+            <li>Consider a co-signer</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feature Importance Chart -->
+  <div class="importance-section">
+    <h3>Feature Importance in Loan Approval</h3>
+    <p>Based on machine learning model analysis, here's how much each feature influences the decision:</p>
+    <div class="chart-container large">
+      <canvas id="importanceChart" width="600" height="300"></canvas>
+    </div>
+  </div>
+
+  <!-- Tips Section -->
+  <div class="tips-section">
+    <h3>💡 Tips to Improve Your Loan Approval Chances</h3>
+    <div class="tips-grid">
+      <div class="tip-card">
+        <h4>🏆 Improve Credit Score</h4>
+        <ul>
+          <li>Pay bills on time</li>
+          <li>Reduce credit utilization</li>
+          <li>Check credit reports for errors</li>
+        </ul>
+      </div>
+      <div class="tip-card">
+        <h4>💰 Increase Income</h4>
+        <ul>
+          <li>Document all income sources</li>
+          <li>Consider part-time work</li>
+          <li>Include investment income</li>
+        </ul>
+      </div>
+      <div class="tip-card">
+        <h4>⚖️ Lower DTI Ratio</h4>
+        <ul>
+          <li>Pay down existing debt</li>
+          <li>Avoid new debt</li>
+          <li>Consider debt consolidation</li>
+        </ul>
+      </div>
+      <div class="tip-card">
+        <h4>📝 Clear Loan Purpose</h4>
+        <ul>
+          <li>Be specific and honest</li>
+          <li>Provide supporting documents</li>
+          <li>Explain how you'll repay</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script>
+// Income vs Approval Chart
+const incomeCtx = document.getElementById('incomeChart').getContext('2d');
+new Chart(incomeCtx, {
+    type: 'line',
+    data: {
+        labels: ['20k', '30k', '40k', '50k', '60k', '70k', '80k+'],
+        datasets: [{
+            label: 'Approval Rate (%)',
+            data: [15, 25, 45, 60, 72, 85, 92],
+            borderColor: '#28a745',
+            backgroundColor: 'rgba(40, 167, 69, 0.1)',
+            tension: 0.4,
+            fill: true
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                max: 100,
+                ticks: { callback: function(value) { return value + '%'; } }
+            }
+        }
+    }
+});
+
+// Credit Score vs Approval Chart
+const creditCtx = document.getElementById('creditChart').getContext('2d');
+new Chart(creditCtx, {
+    type: 'bar',
+    data: {
+        labels: ['300-579', '580-669', '670-739', '740+'],
+        datasets: [{
+            label: 'Approval Rate',
+            data: [15, 45, 75, 95],
+            backgroundColor: ['#dc3545', '#ffc107', '#fd7e14', '#28a745']
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                max: 100,
+                ticks: { callback: function(value) { return value + '%'; } }
+            }
+        }
+    }
+});
+
+// Loan Amount vs Approval Chart
+const loanAmountCtx = document.getElementById('loanAmountChart').getContext('2d');
+new Chart(loanAmountCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['$0-25k', '$25k-50k', '$50k-100k', '$100k+'],
+        datasets: [{
+            data: [78, 85, 65, 35],
+            backgroundColor: ['#28a745', '#20c997', '#ffc107', '#dc3545']
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position: 'bottom' }
+        }
+    }
+});
+
+// DTI Ratio Chart
+const dtiCtx = document.getElementById('dtiChart').getContext('2d');
+new Chart(dtiCtx, {
+    type: 'line',
+    data: {
+        labels: ['0%', '10%', '20%', '30%', '40%', '50%', '60%+'],
+        datasets: [{
+            label: 'Approval Rate (%)',
+            data: [95, 90, 82, 70, 45, 20, 8],
+            borderColor: '#dc3545',
+            backgroundColor: 'rgba(220, 53, 69, 0.1)',
+            tension: 0.4,
+            fill: true
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                max: 100,
+                ticks: { callback: function(value) { return value + '%'; } }
+            }
+        }
+    }
+});
+
+// Feature Importance Chart
+const importanceCtx = document.getElementById('importanceChart').getContext('2d');
+new Chart(importanceCtx, {
+    type: 'horizontalBar',
+    data: {
+        labels: ['Credit Score', 'DTI Ratio', 'Income', 'Employment Status', 'Loan Amount', 'Loan Purpose'],
+        datasets: [{
+            label: 'Importance (%)',
+            data: [35, 25, 20, 10, 7, 3],
+            backgroundColor: [
+                '#007bff', '#28a745', '#ffc107', 
+                '#17a2b8', '#fd7e14', '#6f42c1'
+            ]
+        }]
+    },
+    options: {
+        responsive: true,
+        indexAxis: 'y',
+        plugins: {
+            legend: { display: false }
+        },
+        scales: {
+            x: {
+                beginAtZero: true,
+                max: 40,
+                ticks: { callback: function(value) { return value + '%'; } }
+            }
+        }
+    }
+});
+</script>
+
+<style>
+.details-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.intro-text {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 40px;
+    opacity: 0.9;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 30px;
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.feature-icon {
+    font-size: 32px;
+    margin-right: 15px;
+}
+
+.feature-header h3 {
+    margin: 0;
+    color: #fff;
+}
+
+.feature-content p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.chart-container {
+    margin: 20px 0;
+    background: rgba(255,255,255,0.9);
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.chart-container.large {
+    padding: 30px;
+    margin: 30px 0;
+}
+
+.impact-examples {
+    margin: 15px 0;
+}
+
+.impact-high, .impact-low {
+    padding: 10px;
+    border-radius: 8px;
+    margin: 8px 0;
+}
+
+.impact-high {
+    background: rgba(40, 167, 69, 0.2);
+    border-left: 4px solid #28a745;
+}
+
+.impact-low {
+    background: rgba(220, 53, 69, 0.2);
+    border-left: 4px solid #dc3545;
+}
+
+.tip {
+    background: rgba(255, 193, 7, 0.2);
+    border-left: 4px solid #ffc107;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.probability-bar {
+    height: 25px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    margin: 5px 0;
+    color: white;
+    font-weight: bold;
+}
+
+.probability-bar.low { background: #dc3545; width: 25%; }
+.probability-bar.medium { background: #ffc107; width: 60%; }
+.probability-bar.high { background: #28a745; width: 85%; }
+
+.credit-ranges > div {
+    padding: 8px 12px;
+    margin: 5px 0;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.credit-range.poor { background: rgba(220, 53, 69, 0.2); }
+.credit-range.fair { background: rgba(255, 193, 7, 0.2); }
+.credit-range.good { background: rgba(253, 126, 20, 0.2); }
+.credit-range.excellent { background: rgba(40, 167, 69, 0.2); }
+
+.employment-comparison {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+}
+
+.employment-stat {
+    text-align: center;
+    padding: 20px;
+    border-radius: 15px;
+    flex: 1;
+    margin: 0 10px;
+}
+
+.employment-stat.employed {
+    background: rgba(40, 167, 69, 0.2);
+}
+
+.employment-stat.unemployed {
+    background: rgba(220, 53, 69, 0.2);
+}
+
+.employment-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.approval-rate {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.importance-section {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 30px;
+    margin: 40px 0;
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.tips-section {
+    margin-top: 50px;
+}
+
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.tip-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 25px;
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.tip-card h4 {
+    margin-bottom: 15px;
+    color: #fff;
+}
+
+.tip-card ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.tip-card li {
+    padding: 5px 0;
+    padding-left: 20px;
+    position: relative;
+}
+
+.tip-card li:before {
+    content: "•";
+    color: #28a745;
+    position: absolute;
+    left: 0;
+    font-size: 18px;
+}
+
+@media (max-width: 768px) {
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .employment-comparison {
+        flex-direction: column;
+    }
+    
+    .employment-stat {
+        margin: 10px 0;
+    }
+}
+</style>
+{% endblock %}

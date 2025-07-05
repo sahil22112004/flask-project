@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Loan Approval Prediction</h2>
+
+{% if error %}
+<div class="error-message">
+  <strong>Error:</strong> {{ error }}
+</div>
+{% endif %}
+
+<form method="post" id="predictionForm">
+  <label>Loan Purpose (text):</label><br>
+  <textarea name="text" placeholder="Describe the purpose of your loan (e.g., home purchase, business expansion, education, etc.)" required></textarea><br><br>
+
+  <label>Income ($):</label><br>
+  <input type="number" name="income" placeholder="Annual income" required><br><br>
+
+  <label>Credit Score:</label><br>
+  <input type="number" name="credit_score" placeholder="Credit score (300-850)" min="300" max="850" required><br><br>
+
+  <label>Loan Amount ($):</label><br>
+  <input type="number" name="loan_amount" placeholder="Loan amount requested" required><br><br>
+
+  <label>DTI Ratio:</label><br>
+  <input type="number" step="0.01" name="dti" placeholder="e.g., 0.35" min="0" max="1" required><br><br>
+
+  <label>Employment Status:</label><br>
+  <select name="employment" required>
+    <option value="" disabled selected>Select employment status</option>
+    <option value="employed">Employed</option>
+    <option value="unemployed">Unemployed</option>
+  </select><br><br>
+
+  <input type="submit" value="Predict Loan Approval">
+</form>
+
+{% if prediction %}
+<div id="predictionModal" class="modal" style="display: block;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2>Loan Prediction Result</h2>
+    </div>
+    <div class="modal-body">
+      {% if prediction == 'Approved' %}
+        <div class="prediction-icon approved">✅</div>
+        <div class="prediction-text approved">Congratulations!</div>
+        <div class="prediction-subtitle">Your loan is likely to be <strong>APPROVED</strong></div>
+        <p class="approved">You appear to meet the approval criteria. Proceed with your application.</p>
+      {% else %}
+        <div class="prediction-icon rejected">❌</div>
+        <div class="prediction-text rejected">Application Declined</div>
+        <div class="prediction-subtitle">Your loan is likely to be <strong>REJECTED</strong></div>
+        <p class="rejected">You may need to strengthen your financial profile before reapplying.</p>
+      {% endif %}
+    </div>
+    <div class="modal-footer">
+      <button class="modal-button" onclick="closeModal()">Close</button>
+      <button class="modal-button" onclick="resetForm()">Try Again</button>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<script>
+function closeModal() {
+  document.getElementById('predictionModal').style.display = 'none';
+}
+function resetForm() {
+  document.getElementById('predictionForm').reset();
+  closeModal();
+}
+</script>
+
+<style>
+/* Error message style */
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  border: 1px solid #f5c6cb;
+}
+
+/* Prediction result colors */
+.prediction-icon.approved {
+  color: #28a745;
+}
+.prediction-icon.rejected {
+  color: #dc3545;
+}
+.approved {
+  color: #28a745;
+}
+.rejected {
+  color: #dc3545;
+}
+
+/* Fix dropdown visibility */
+select, option {
+  color: #333;
+  background-color: #fff;
+}
+select:invalid {
+  color: #888;
+}
+</style>
+{% endblock %}
