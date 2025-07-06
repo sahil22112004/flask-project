@@ -3,7 +3,9 @@ import joblib
 import pandas as pd
 import numpy as np
 import re
+import os
 
+# Load models
 model = joblib.load("best_model.pkl")
 tfidf = joblib.load("tfidf.pkl")
 scaler = joblib.load("scaler.pkl")
@@ -64,4 +66,5 @@ def detail():
     return render_template("detail.html", tables=[df.head().to_html(classes='data', header="true")])
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=False)
